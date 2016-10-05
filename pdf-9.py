@@ -15,22 +15,10 @@ print('PROCESSING...')
 
 try:
     contents = PdfFileReader(f).getPage(i-1).extractText()
-
-    o = open(str(i)+c,'w')
-    o.write(contents.encode('utf-8'))
-    o.close()
-    
-finally:
-    f.close()
-    
-    print('COMPLETE: ['+str(i)+c+']')
-    print
     
     cont = re.sub(r'\n','',contents)
     matched = re.sub(r'( [0-9]+)(\. )', r' \1\. ',cont)
     matches = re.findall('( [0-9]+\\\\\. )', matched)
-
-    print('Amount of questions in page: '+str(len(matches)))
     
     n = 0
     questions = []
@@ -47,5 +35,15 @@ finally:
             questions.append(m)
 
         n = n+1
+    
+    #use 'questions[0]' to see each question
 
-        #use 'questions[0]' to see each question
+    o = open(str(i)+c,'w')
+    o.write(str(questions).encode('utf-8')) #changed 'contents' to 'questions'
+    o.close()
+
+    print('COMPLETE: ['+str(i)+c+']')
+    print('Amount of questions in page: '+str(len(matches)))
+    
+finally:
+    f.close()
