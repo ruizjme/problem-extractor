@@ -76,18 +76,31 @@ def contents_page(pg):
 
 # TODO: Extract answer and match it to the question
 
+# TODO: Parse questions and prepare SQL
+def dict_to_sql(pg, d):
+    o = open(str(pg) +'.sql', 'w')
+    SQL = ''
 
+    for i in d.values():
+        SQL +=   '''
+        INSERT INTO `t_questions` (`q_id`, `question`, `answer`, `figure`)
+        VALUES (
+            NULL,
+            '%s',
+            '?',
+            ''
+            );
+        '''%(i)
 
+    o.write(SQL.encode('utf-8', 'ignore'))
+    o.close()
 
 # MAIN FUNCTION
 def main():
-    while True:
-        try:
-            extract_questions(int(input('Insert page number: ')))
-            #contents_page(int(8))
-            break
-        except NameError:
-            print 'Page number must be an integer.'
+        pg = int(input('Insert page number: '))
+        dict_to_sql(pg, extract_questions(pg))
+        #contents_page(int(8))
+
 
 if __name__ == '__main__':
     main()
